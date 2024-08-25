@@ -1389,6 +1389,8 @@ namespace Gurux.DLMS.Reader
                 {
                     if (!reply.IsStreaming())
                     {
+                        if (Client.HdlcIecDataWrapper)
+                            data = AddIecDataWraper(data);
                         WriteTrace("TX:\t" + DateTime.Now.ToLongTimeString() + "\t" + GXCommon.ToHex(data, true));
                         p.Reply = null;
                         Media.Send(data, null);
@@ -1779,6 +1781,27 @@ namespace Gurux.DLMS.Reader
                 ReadDataBlock(data, reply);
                 Client.ParseAccessResponse(list, reply.Data);
             }
+        }
+
+        public byte[] AddIecDataWraper(byte[] data)
+        {
+            var result = new List<byte>(data);
+            result.Insert(0, 0x02);
+            result.Add(0x21);
+            result.Add(0x0d);
+            result.Add(0x0a);
+            result.Add(0x03);
+            var crc = CalculateBcc(result);
+            result.Add(crc);
+            return result.ToArray();
+        }
+
+        public static byte CalculateBcc(List<byte> data)
+        {
+            byte bcc = 0;
+            foreach (byte b in data)
+                bcc ^= b; // XOR each byte with the current BCC value
+            return bcc;
         }
     }
 }

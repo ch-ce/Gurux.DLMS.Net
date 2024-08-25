@@ -365,6 +365,11 @@ namespace Gurux.DLMS
             set;
         }
 
+        /// <summary>
+        /// Wrap HDLC frames with IEC Data frames
+        /// </summary>
+        public bool HdlcIecDataWrapper { get; set; }
+
         ///<summary>
         ///Constructor.
         ///</summary>

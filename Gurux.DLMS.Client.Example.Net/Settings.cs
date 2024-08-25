@@ -161,6 +161,9 @@ namespace Gurux.DLMS.Client.Example
                             settings.client.Password = ASCIIEncoding.ASCII.GetBytes(it.Value);
                         }
                         break;
+                    case 'j':
+                        settings.client.HdlcIecDataWrapper = true;
+                        break;
                     case 'i':
                         try
                         {
@@ -557,6 +560,7 @@ namespace Gurux.DLMS.Client.Example
             Console.WriteLine(" -N \t Generate new client and server certificates and import them to the server. Ex. -N 0.0.43.0.0.255.");
             Console.WriteLine(" -G \t Use Gateway with given NetworkId and PhysicalDeviceAddress. Ex -G 0:1.");
             Console.WriteLine(" -i \t Used communication interface. Ex. -i WRAPPER.");
+            Console.WriteLine(" -j \t Add Iec Data wrapper to Hdlc frames. Use with -i HdlcWithModeE.");
             Console.WriteLine(" -m \t Used PLC MAC address. Ex. -m 1.");
             Console.WriteLine(" -G \t Gateway settings NetworkId:PhysicalDeviceAddress. Ex -G 1:12345678");
             Console.WriteLine(" -W \t General Block Transfer window size.");
