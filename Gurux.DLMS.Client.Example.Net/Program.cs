@@ -34,6 +34,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gurux.Serial;
 using Gurux.Net;
 using Gurux.DLMS.Enums;
@@ -150,11 +151,37 @@ namespace Gurux.DLMS.Client.Example
                     reader.InitializeConnection();
                     if (!read)
                     {
-                        reader.GetAssociationView(settings.outputFile);
+                        var unknownCLassId = settings.readObjects.Any(x => x.Key.Contains("-") == false);
+                        if (unknownCLassId)
+                        {
+                            Console.Write($"Reading association: ");
+                            reader.GetAssociationView(settings.outputFile);
+                            Console.WriteLine($"Success");
+                        }
                     }
                     foreach (KeyValuePair<string, int> it in settings.readObjects)
                     {
-                        object val = reader.Read(settings.client.Objects.FindByLN(ObjectType.None, it.Key), it.Value);
+                        var obis = it.Key;
+                        var classId = 0;
+                        var version = 1;
+                        if (obis.Contains("-")) //known class id 3-1.0.1.8.0.255;2
+                        {
+                            classId = int.Parse(it.Key.Split('-').FirstOrDefault() ?? string.Empty);
+                            obis = it.Key.Split('-').LastOrDefault();
+                        }
+                        else //unknown class id - find it in association table
+                        {
+                            var reg = settings.client.Objects.FindByLN(ObjectType.None, it.Key);
+                            if (reg == null)
+                                continue;
+                            classId = (int)reg.ObjectType;
+                            version = reg.Version;
+                        }
+
+                        Console.Write($@"{(ObjectType)classId} {classId}-{obis}:{it.Value} = ");
+                        var obj = GXDLMSClient.CreateObject((ObjectType)classId, (byte)version);
+                        obj.LogicalName = obis;
+                        object val = reader.Read(obj, it.Value);
                         reader.ShowValue(val, it.Value);
                     }
                     if (settings.outputFile != null)
