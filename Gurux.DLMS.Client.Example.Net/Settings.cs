@@ -42,6 +42,7 @@ using Gurux.DLMS.Enums;
 using Gurux.DLMS.Secure;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Linq;
 using Gurux.DLMS.Objects.Enums;
 using Gurux.MQTT;
 
@@ -161,13 +162,13 @@ namespace Gurux.DLMS.Client.Example
                             settings.client.Password = ASCIIEncoding.ASCII.GetBytes(it.Value);
                         }
                         break;
-                    case 'j':
-                        settings.client.HdlcIecDataWrapper = true;
-                        break;
                     case 'i':
                         try
                         {
-                            settings.client.InterfaceType = (InterfaceType)Enum.Parse(typeof(InterfaceType), it.Value);
+                            var pdata = it.Value;
+                            settings.client.HdlcIecDataWrapper = it.Value == "HdlcWithModeE+IecDataWrapper";
+                            pdata = pdata.Contains("+") ? pdata.Split('+').FirstOrDefault() : pdata;
+                            settings.client.InterfaceType = (InterfaceType)Enum.Parse(typeof(InterfaceType), pdata);
                             settings.client.Plc.Reset();
                             if (modeEDefaultValues && settings.client.InterfaceType == InterfaceType.HdlcWithModeE &&
                                 settings.media is GXSerial)
@@ -559,8 +560,7 @@ namespace Gurux.DLMS.Client.Example
             Console.WriteLine(" -E \t Export client and server certificates from the meter. Ex. -E 0.0.43.0.0.255.");
             Console.WriteLine(" -N \t Generate new client and server certificates and import them to the server. Ex. -N 0.0.43.0.0.255.");
             Console.WriteLine(" -G \t Use Gateway with given NetworkId and PhysicalDeviceAddress. Ex -G 0:1.");
-            Console.WriteLine(" -i \t Used communication interface. Ex. -i WRAPPER.");
-            Console.WriteLine(" -j \t Add Iec Data wrapper to Hdlc frames. Use with -i HdlcWithModeE.");
+            Console.WriteLine(" -i \t Used communication interface. Ex. -i WRAPPER or -i HdlcWithModeE+IecDataWrapper");
             Console.WriteLine(" -m \t Used PLC MAC address. Ex. -m 1.");
             Console.WriteLine(" -G \t Gateway settings NetworkId:PhysicalDeviceAddress. Ex -G 1:12345678");
             Console.WriteLine(" -W \t General Block Transfer window size.");
