@@ -1126,7 +1126,7 @@ namespace Gurux.DLMS.Reader
                 //If data is array.
                 if (val is byte[])
                 {
-                    val = GXCommon.ToHex((byte[])val, true);
+                    val = ConvertBytesToAsciiWithHex((byte[])val);
                 }
                 else if (val is Array)
                 {
@@ -1173,6 +1173,32 @@ namespace Gurux.DLMS.Reader
                 }
                 Console.WriteLine("Index: " + pos + " Value: " + val);
             }
+        }
+
+        private object ConvertBytesToAsciiWithHex(byte[] val)
+        {
+            if (val == null || val.Length == 0)
+                return string.Empty;
+
+            var asciiBuilder = new StringBuilder();
+            var hexBuilder = new StringBuilder();
+            var nonPrintableFound = false;
+
+            foreach (byte b in val)
+            {
+                hexBuilder.AppendFormat("{0:X2}", b);
+                if (b >= 32 && b <= 126)
+                {
+                    if (!nonPrintableFound)
+                        asciiBuilder.Append((char) b);
+                }
+                else if (b == 0)
+                    nonPrintableFound = true;
+                else
+                    return hexBuilder.ToString();
+            }
+
+            return nonPrintableFound ? hexBuilder.ToString() : $"{asciiBuilder} [{hexBuilder}]";
         }
 
         public void GetProfileGenerics()
