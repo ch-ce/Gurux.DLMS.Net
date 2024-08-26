@@ -3,7 +3,7 @@ Changes
 =========================== 
 + Hdlc Iec Data WRAPPER
 + Custom AARQ & AARE
-
++ Show string if data is printable (byte[], show value)
 
 
 See An [Gurux](http://www.gurux.org/ "Gurux") for an overview.
