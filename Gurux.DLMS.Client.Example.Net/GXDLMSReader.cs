@@ -1189,15 +1189,16 @@ namespace Gurux.DLMS.Reader
                 hexBuilder.AppendFormat("{0:X2}", b);
                 if (b >= 32 && b <= 126)
                 {
-                    if (!nonPrintableFound)
-                        asciiBuilder.Append((char) b);
+                    asciiBuilder.Append((char) b);
                 }
                 else if (b == 0)
-                    nonPrintableFound = true;
+                {
+                }
                 else
-                    return hexBuilder.ToString();
+                {
+                    nonPrintableFound = true;
+                }
             }
-
             return nonPrintableFound ? hexBuilder.ToString() : $"{asciiBuilder} [{hexBuilder}]";
         }
 
