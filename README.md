@@ -7,8 +7,8 @@ Changes
 + Ignore LLC checking
 + Read registers without reading Ln association (when added classId)
 
-+ Original info
-+ =========================== 
+Original info
+=========================== 
 See An [Gurux](http://www.gurux.org/ "Gurux") for an overview.
 
 Join the Gurux Community or follow [@Gurux](https://twitter.com/guruxorg "@Gurux") for project updates.
