@@ -1,11 +1,11 @@
 
 Changes
 =========================== 
-+ Hdlc Iec Data WRAPPER
-+ Custom AARQ & AARE
++ Hdlc Iec Data WRAPPER (-i HdlcWithModeE+IecDataWrapper)
++ Custom AARQ & AARE (-x "000000" -z "FFFFFF") (change into valid frame - HDLC information)
 + Show string if data is printable (byte[], show value)
-+ Ignore LLC checking
-+ Read registers without reading Ln association (when added classId)
++ Ignore LLC checking (-y)
++ Read registers without reading Ln association ([classid]-[obis]:[attrId]) (-g "1-1.0.0.2.0.255:2")
 
 Original info
 =========================== 
