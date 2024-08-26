@@ -311,14 +311,5 @@ namespace Gurux.DLMS.Secure
                 Settings.ServerPublicKeyCertificate = value;
             }
         }
-
-        /// <summary>
-        /// Wrap HDLC frames with IEC Data frames
-        /// </summary>
-        public bool HdlcIecDataWrapper
-        {
-            get => Settings.HdlcIecDataWrapper;
-            set => Settings.HdlcIecDataWrapper = value;
-        }
     }
 }

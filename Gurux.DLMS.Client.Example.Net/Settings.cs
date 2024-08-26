@@ -71,7 +71,7 @@ namespace Gurux.DLMS.Client.Example
             //Has user give the custom serial port settings or are the default values used in mode E.
             bool modeEDefaultValues = true;
             string[] tmp;
-            List<GXCmdParameter> parameters = GXCommon.GetParameters(args, "h:p:c:s:r:i:It:a:P:g:S:C:n:v:o:T:A:B:D:d:l:F:m:E:V:G:M:K:N:W:w:f:L:q:b:R:u");
+            List<GXCmdParameter> parameters = GXCommon.GetParameters(args, "h:p:c:s:r:i:It:a:P:g:S:C:n:v:o:T:A:B:D:d:l:F:m:E:V:G:M:K:N:W:w:f:L:q:b:R:u:x:z:y");
             foreach (GXCmdParameter it in parameters)
             {
                 switch (it.Tag)
@@ -161,6 +161,15 @@ namespace Gurux.DLMS.Client.Example
                         {
                             settings.client.Password = ASCIIEncoding.ASCII.GetBytes(it.Value);
                         }
+                        break;
+                    case 'y':
+                        settings.client.IgnoreLLC = true;
+                        break;
+                    case 'z':
+                        settings.client.AARQreplace = GXCommon.HexToBytes(it.Value.Remove(0, 6)); //Trimming LLC bytes (3 bytes)
+                        break;
+                    case 'x':
+                        settings.client.AAREreplace = GXCommon.HexToBytes(it.Value.Remove(0, 6)); //Trimming LLC bytes (3 bytes)
                         break;
                     case 'i':
                         try

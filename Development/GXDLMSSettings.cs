@@ -1252,6 +1252,11 @@ namespace Gurux.DLMS
         }
 
         /// <summary>
+        /// Ignore LLC bytes
+        /// </summary>
+        public bool IgnoreLLC { get; set; }
+
+        /// <summary>
         /// This event is invoked when custom manufacturer object is created.
         /// </summary>
         internal ObjectCreateEventHandler customObject;

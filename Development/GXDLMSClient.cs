@@ -1078,6 +1078,11 @@ namespace Gurux.DLMS
                 Settings.CtoSChallenge = null;
             }
             GXAPDU.GenerateAarq(Settings, Settings.Cipher, null, buff);
+            if (AARQreplace != null) //Replace AAQR HDLC.Information field
+            {
+                buff.Clear();
+                buff.Set(AARQreplace);
+            }
             byte[][] reply;
             if (UseLogicalNameReferencing)
             {
@@ -3825,6 +3830,35 @@ namespace Gurux.DLMS
                 }
             }
             return true;
+        }
+
+
+        /// <summary>
+        /// Wrap HDLC frames with IEC Data frames
+        /// </summary>
+        public bool HdlcIecDataWrapper
+        {
+            get => Settings.HdlcIecDataWrapper;
+            set => Settings.HdlcIecDataWrapper = value;
+        }
+
+        /// <summary>
+        /// Replace Hdlc.Information field with my AARQ
+        /// </summary>
+        public byte[] AARQreplace { get; set; }
+
+        /// <summary>
+        /// Replace device response Hdlc.Information field with my AARE
+        /// </summary>
+        public byte[] AAREreplace { get; set; }
+
+        /// <summary>
+        /// Dont check LLC bytes
+        /// </summary>
+        public bool IgnoreLLC
+        {
+            get => Settings.IgnoreLLC;
+            set => Settings.IgnoreLLC = value;
         }
     }
 }

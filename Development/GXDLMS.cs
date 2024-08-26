@@ -2958,6 +2958,8 @@ namespace Gurux.DLMS
                 {
                     if (first)
                     {
+                        if (settings.IgnoreLLC)
+                            return frame; //incorrect result but it's irrevelant
                         bool llc = GetLLCBytes(server, reply);
                         if (data.Xml == null)
                         {

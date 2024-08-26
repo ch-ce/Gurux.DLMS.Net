@@ -851,6 +851,8 @@ namespace Gurux.DLMS.Reader
                     reply.Clear();
                     ReadDataBlock(it, reply);
                 }
+                if (Client.AAREreplace != null)
+                    reply.Data = new GXByteBuffer(Client.AAREreplace);
                 if (Trace > TraceLevel.Info)
                 {
                     Console.WriteLine("Parsing AARE reply" + reply.ToString());
